@@ -13,45 +13,45 @@ import java.util.List;
 @Service
 @Slf4j
 public class RevisionService {
-    private final RevisionRepository RevisionRepository;
-    private final me.weldnor.mapper.RevisionMapper RevisionMapper;
+    private final RevisionRepository revisionRepository;
+    private final RevisionMapper revisionMapper;
 
-    public RevisionService(RevisionRepository RevisionRepository, RevisionMapper RevisionMapper) {
-        this.RevisionRepository = RevisionRepository;
-        this.RevisionMapper = RevisionMapper;
+    public RevisionService(RevisionRepository revisionRepository, RevisionMapper revisionMapper) {
+        this.revisionRepository = revisionRepository;
+        this.revisionMapper = revisionMapper;
     }
 
     public List<RevisionDto> getAllRevisions() {
-        var revisions = RevisionRepository.findAll();
-        return RevisionMapper.mapToDto(revisions);
+        var revisions = revisionRepository.findAll();
+        return revisionMapper.mapToDto(revisions);
     }
 
     public void deleteAllRevisions() {
-        RevisionRepository.deleteAll();
+        revisionRepository.deleteAll();
     }
 
     public RevisionDto addRevision(RevisionDto revisionDto) {
-        Revision revision = RevisionMapper.mapToEntity(revisionDto);
-        revision = RevisionRepository.save(revision);
-        return RevisionMapper.mapToDto(revision);
+        Revision revision = revisionMapper.mapToEntity(revisionDto);
+        revision = revisionRepository.save(revision);
+        return revisionMapper.mapToDto(revision);
     }
 
     public RevisionDto getRevision(long revisionId) throws RevisionNotFoundException {
         Revision revision = findRevisionById(revisionId);
-        return RevisionMapper.mapToDto(revision);
+        return revisionMapper.mapToDto(revision);
     }
 
     public void updateRevision(long revisionId, RevisionDto revisionDto) throws RevisionNotFoundException {
         Revision revision = findRevisionById(revisionId);
-        RevisionMapper.updateEntity(revision, revisionDto);
+        revisionMapper.updateEntity(revision, revisionDto);
     }
 
     public void deleteRevision(long revisionId) {
-        RevisionRepository.deleteById(revisionId);
+        revisionRepository.deleteById(revisionId);
     }
 
     private Revision findRevisionById(long revisionId) throws RevisionNotFoundException {
-        return RevisionRepository.findById(revisionId)
+        return revisionRepository.findById(revisionId)
                 .orElseThrow(() -> new RevisionNotFoundException(revisionId));
     }
 }
