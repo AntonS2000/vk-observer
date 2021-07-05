@@ -2,7 +2,10 @@ package me.weldnor.mapper;
 
 import me.weldnor.dto.RevisionDto;
 import me.weldnor.entity.Revision;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 
@@ -14,7 +17,8 @@ import java.util.List;
 public interface RevisionMapper {
     Revision mapToEntity(RevisionDto dto);
 
-    @Mapping(target = "isOnline", source = "online")
+    @SuppressWarnings("UnmappedTargetProperties")
+        //FIXME
     RevisionDto mapToDto(Revision entity);
 
     void updateEntity(@MappingTarget Revision entity, RevisionDto dto);
